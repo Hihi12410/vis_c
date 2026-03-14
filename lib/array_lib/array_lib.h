@@ -11,18 +11,21 @@
  * Is a packed boolean array.
 */
 
-#define BITLIST ( unsigned char )
+#define BITLIST unsigned char
 
 /* Make a bitlist. */
-#define BITLIST_INIT( guid, n ) BITLIST ##guid[ ( ( n ) / 8u ) + (( ( n ) % 8u > 0 ) ? 1 : 0 ) ]
+#define BITLIST_INIT( guid, n ) BITLIST guid[ ( ( n ) / 8u ) + (( ( n ) % 8u > 0 ) ? 1 : 0 ) ]
 
 /* Read */
-#define BITLIST_READ_ELEMENT( guid, x ) GET_BIT( ##guid[ ( x ) / 8u ] , ( x ) % 8u )
+#define BITLIST_READ_ELEMENT( guid, x ) GET_BIT( guid[ ( x ) / 8u ] , ( x ) % 8u )
 
 /* Write */
 #define BITLIST_WRITE_ELEMENT( guid, x, v ) BITLIST_WRITE_##v( ( guid ) , ( v ) )
-#define BITLIST_WRITE_0( guid, x ) DISABLE_BIT( ##guid[ ( x ) / 8u ] , ( x ) % 8u )
-#define BITLIST_WRITE_1( guid, x ) ENABLE_BIT( ##guid[ ( x ) / 8u ] , ( x ) % 8u )
+#define BITLIST_WRITE_0( guid, x ) DISABLE_BIT( guid[ ( x ) / 8u ] , ( x ) % 8u )
+#define BITLIST_WRITE_1( guid, x ) ENABLE_BIT( guid[ ( x ) / 8u ] , ( x ) % 8u )
 
+#define BITLIST_WRITE_ELEMENT_MUT( guid, x, v ) BITLIST_WRITE_MUT_##v( ( guid ) , ( x ) )
+#define BITLIST_WRITE_MUT_0( guid, x ) guid[ ( x ) / 8u ] = DISABLE_BIT( guid[ ( x ) / 8u ] , ( x ) % 8u )
+#define BITLIST_WRITE_MUT_1( guid, x ) guid[ ( x ) / 8u ] = ENABLE_BIT( guid[ ( x ) / 8u ] , ( x ) % 8u )
 
 #endif
